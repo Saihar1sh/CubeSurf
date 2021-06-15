@@ -35,9 +35,9 @@ public class CubeController : MonoBehaviour
             other.gameObject.SetActive(false);
         }
 
-        if(other.gameObject.tag == "Boost")
+        if (other.gameObject.tag == "Boost")
         {
-
+            CubesManager.Instance.BoostPowerPickup();
         }
 
     }

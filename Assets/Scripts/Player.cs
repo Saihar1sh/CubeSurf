@@ -18,9 +18,9 @@ public class Player : MonoBehaviour
         CubesManager.Instance.cubeRbs.Add(rb);
     }
 
-
-    void Update()
+    public void EnablePlayerMovement(bool p)
     {
+        this.enabled = p;
     }
 
 }
