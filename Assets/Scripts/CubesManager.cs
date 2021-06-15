@@ -11,7 +11,7 @@ public class CubesManager : MonoSingletonGeneric<CubesManager>
     [SerializeField]
     private Transform spawnLocation;
 
-    private bool started = true, gameOver = false;
+    private bool magnetPicked = false, boostPicked = false, gameOver = false;
 
     private int length;
 
@@ -37,7 +37,10 @@ public class CubesManager : MonoSingletonGeneric<CubesManager>
     {
         if (cubes.Count == 0)
         {
-            gameOver = true;
+            foreach (Rigidbody rb in cubeRbs)
+            {
+                rb.velocity = Vector3.zero;
+            }
             return;
         }
         Movement();
@@ -45,9 +48,9 @@ public class CubesManager : MonoSingletonGeneric<CubesManager>
 
     public void AddCubes()
     {
-        Vector3 lastTopPos = player.transform.position;
-        CubeController cube = Instantiate<CubeController>(playerCubePrefab, lastTopPos, top.transform.rotation, spawnLocation);
+        Vector3 lastTopPos = player.transform.position;                 //moving player up like a jump then instantiating new cube in player's last position
         player.transform.position += Vector3.up * 3;
+        CubeController cube = Instantiate<CubeController>(playerCubePrefab, lastTopPos, top.transform.rotation, spawnLocation);
         cubes.Add(cube);
         top = cube;
 
@@ -59,12 +62,40 @@ public class CubesManager : MonoSingletonGeneric<CubesManager>
         {
             Vector3 desiredPos = new Vector3(inputManager.SwipeDelta.normalized.x, 0, 1f);
             cubeRb.MovePosition(cubeRb.position + desiredPos * mvtSpeed * Time.deltaTime);
-            /*            Vector3 playerPos = playerMain.transform.position;
-                        playerPos.x += inputManager.SwipeDelta.normalized.x * mvtSpeed * Time.deltaTime;
-                        playerMain.transform.position = playerPos;
-            */
         }
 
+    }
+
+    public void MagnetPowerPickup(BoxCollider magnetPowerCollider, float secs)
+    {
+        if (!magnetPicked)
+        {
+            StartCoroutine(MagnetPickup(magnetPowerCollider, secs));
+            magnetPicked = true;
+        }
+    }
+    public void BoostPowerPickup()
+    {
+        if (!boostPicked)
+        {
+            StartCoroutine(BoostPickup());
+            boostPicked = true;
+        }
+    }
+    IEnumerator MagnetPickup(BoxCollider magnetPowerCollider, float secs)
+    {
+        magnetPowerCollider.enabled = true;
+        yield return new WaitForSeconds(secs);
+        magnetPowerCollider.enabled = false;
+        magnetPicked = false;
+    }
+    IEnumerator BoostPickup()
+    {
+        float speed = mvtSpeed;
+        mvtSpeed = mvtSpeed * 3f;
+        yield return new WaitForSeconds(5f);
+        mvtSpeed = speed;
+        boostPicked = false;
     }
 
 }

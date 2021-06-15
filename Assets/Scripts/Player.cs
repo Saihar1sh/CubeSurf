@@ -4,12 +4,8 @@ public class Player : MonoBehaviour
 {
     private Rigidbody rb;
 
-
     [SerializeField]
-    private Transform playerMain;
-
-    [SerializeField]
-    private InputManager inputManager;
+    private BoxCollider magnetPowerCollider;
 
 
     private void Awake()
@@ -25,7 +21,6 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        //Movement();
     }
 
 }

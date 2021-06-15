@@ -6,9 +6,6 @@ public class CubeController : MonoBehaviour
 {
     private Rigidbody rb;
 
-    [SerializeField]
-    private float mvtSpeed = 5f;
-
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -20,7 +17,6 @@ public class CubeController : MonoBehaviour
     }
     void Update()
     {
-        //rb.MovePosition(rb.position + Vector3.forward * mvtSpeed * Time.deltaTime);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -38,5 +34,11 @@ public class CubeController : MonoBehaviour
             CubesManager.Instance.AddCubes();
             other.gameObject.SetActive(false);
         }
+
+        if(other.gameObject.tag == "Boost")
+        {
+
+        }
+
     }
 }
