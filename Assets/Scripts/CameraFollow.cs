@@ -2,22 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraFollow : MonoBehaviour
+public class CameraFollow : MonoSingletonGeneric<CameraFollow>
 {
     [SerializeField]
     private Transform player;
     [SerializeField]
     private Vector3 offset;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
     void Update()
     {
         transform.position = player.position + offset;
+    }
+    public void SetTargetPlayer(Transform t)
+    {
+        player = t;
     }
 }
