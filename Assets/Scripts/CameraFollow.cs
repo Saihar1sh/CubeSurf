@@ -11,7 +11,9 @@ public class CameraFollow : MonoSingletonGeneric<CameraFollow>
 
     void Update()
     {
-        transform.position = player.position + offset;
+        transform.position = Vector3.Lerp(transform.position, player.position + offset, Time.deltaTime * 5f);
+        if (CubesManager.Instance.cubes.Count >= 20)
+            offset.z = -25;
     }
     public void SetTargetPlayer(Transform t)
     {

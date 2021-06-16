@@ -14,16 +14,18 @@ public class CubesManager : MonoSingletonGeneric<CubesManager>
     [SerializeField]
     private LayerMask whatIsGround;
 
-    private bool magnetPicked = false, boostPicked = false, gameOver = true, isGrounded = false, playerDisabled = false;
+    private bool magnetPicked = false, boostPicked = false, gameOver = false, isGrounded = false, playerDisabled = false;
 
     //Scripts ref
     [SerializeField]
     private CubeController playerCubePrefab;
     private CubeController top;
     [SerializeField]
-    private Player player;
-    [SerializeField]
     private InputManager inputManager;
+
+    public int boxesCollected = 0;
+
+    public Player player;
 
     //Lists
     public List<CubeController> cubes;
@@ -33,13 +35,14 @@ public class CubesManager : MonoSingletonGeneric<CubesManager>
     {
         top = cubes[0];
         EnableMovement(false);
+        player.enabled = true;
     }
 
     void Update()
     {
         isGrounded = Physics.Raycast(groundCheck.position, -transform.up, groundCheckDist, whatIsGround);
 
-        if (isGrounded || cubes.Count == 0)
+        if (isGrounded || gameOver || cubes.Count == 0)
         {
             EnableMovement(false);
             UIManager.Instance.RetryImageEnable(true);
@@ -65,7 +68,7 @@ public class CubesManager : MonoSingletonGeneric<CubesManager>
         CubeController cube = Instantiate<CubeController>(playerCubePrefab, lastTopPos, top.transform.rotation, spawnLocation);
         cubes.Add(cube);
         top = cube;
-
+        boxesCollected++;
     }
 
     private void Movement()
@@ -80,9 +83,21 @@ public class CubesManager : MonoSingletonGeneric<CubesManager>
         float xpos = pos.x;
         float zpos = pos.z;
         player.transform.position = new Vector3(xpos, player.transform.position.y, zpos);
+        if (player.transform.position.y < -20)
+            gameOver = true;
+        if (player.transform.position.z > 264)
+        {
+            EnableMovement(false);
+            UIManager.Instance.LvlCompleted();
+        }
+
         foreach (CubeController cube in cubes)                                              //maintaining them as one stack of cubes while moving
         {
             cube.transform.position = new Vector3(xpos, cube.transform.position.y, zpos);
+            if (cube.transform.position.y < -20)
+            {
+                cubes.Remove(cube);
+            }
         }
 
     }
@@ -107,8 +122,11 @@ public class CubesManager : MonoSingletonGeneric<CubesManager>
     //coroutines
     IEnumerator MagnetPickup(BoxCollider magnetPowerCollider, float secs)
     {
+        magnetPicked = true;
         magnetPowerCollider.enabled = true;
         yield return new WaitForSeconds(secs);
+        Debug.Log("5 secs ended");
+
         magnetPowerCollider.enabled = false;
         magnetPicked = false;
     }

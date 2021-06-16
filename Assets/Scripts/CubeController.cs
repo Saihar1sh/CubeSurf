@@ -15,9 +15,6 @@ public class CubeController : MonoBehaviour
     {
         CubesManager.Instance.cubeRbs.Add(rb);
     }
-    void Update()
-    {
-    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -38,6 +35,13 @@ public class CubeController : MonoBehaviour
         if (other.gameObject.tag == "Boost")
         {
             CubesManager.Instance.BoostPowerPickup();
+        }
+
+        if (other.gameObject.tag == "Magnet")
+        {
+            CubesManager.Instance.player.MagnetPickup();
+            other.gameObject.SetActive(false);
+
         }
 
     }

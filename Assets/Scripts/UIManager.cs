@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class UIManager : MonoSingletonGeneric<UIManager>
 {
@@ -8,7 +9,10 @@ public class UIManager : MonoSingletonGeneric<UIManager>
     private Button playBtn, retryBtn, exitBtn, exitBtn2;
 
     [SerializeField]
-    private Image startImg, retryImg;
+    private Image startImg, retryImg, lvlCompleteImg;
+
+    [SerializeField]
+    private TextMeshProUGUI scoreText;
 
     protected override void Awake()
     {
@@ -22,24 +26,34 @@ public class UIManager : MonoSingletonGeneric<UIManager>
     // Start is called before the first frame update
     void Start()
     {
-        startImg.enabled = true;
-        retryImg.enabled = false;
+        startImg.gameObject.SetActive(true);
+        retryImg.gameObject.SetActive(false);
+        lvlCompleteImg.gameObject.SetActive(false);
+        scoreText.enabled = false;
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        scoreText.text = "Score : " + CubesManager.Instance.boxesCollected;
     }
 
     private void PlayGame()
     {
+        startImg.gameObject.SetActive(false);
         CubesManager.Instance.EnableMovement(true);
-        startImg.enabled = false;
+        scoreText.enabled = true;
+    }
+
+    public void LvlCompleted()
+    {
+        lvlCompleteImg.gameObject.SetActive(true);
     }
 
     public void RetryImageEnable(bool b)
     {
-        retryImg.enabled = b;
+        retryImg.gameObject.SetActive(b);
     }
 
     private void RetryScene()

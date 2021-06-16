@@ -4,25 +4,15 @@ using UnityEngine;
 
 public class InputManager : MonoSingletonGeneric<InputManager>
 {
-
-    [SerializeField]
-    private Player player;
-
     private Vector2 startTouch, swipeDelta;
 
     private bool isDragging = false;
-
-    private SwipeInputValues inputValues;
-
-    public SwipeInputValues InputValues { get { return inputValues; } }
 
     public Vector2 SwipeDelta { get => swipeDelta; }
 
 
     void Update()
     {
-        inputValues = SwipeInputValues.Null;
-
         Inputs();
         CalculateSwipeDistance();
 
@@ -78,13 +68,5 @@ public class InputManager : MonoSingletonGeneric<InputManager>
 
 
     }
-}
-
-
-public enum SwipeInputValues
-{
-    Null,
-    SwipeLeft,
-    SwipeRight,
 }
 
