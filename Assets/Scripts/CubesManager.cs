@@ -73,6 +73,18 @@ public class CubesManager : MonoSingletonGeneric<CubesManager>
 
     private void Movement()
     {
+        if (player.transform.position.y < -20)
+        {
+            gameOver = true;
+            return;
+        }
+        if (player.transform.position.z > 264)
+        {
+            EnableMovement(false);
+            UIManager.Instance.LvlCompleted();
+            return;
+        }
+
         foreach (Rigidbody cubeRb in cubeRbs)
         {
             Vector3 desiredPos = new Vector3(inputManager.SwipeDelta.normalized.x, 0, 1f);
@@ -83,13 +95,6 @@ public class CubesManager : MonoSingletonGeneric<CubesManager>
         float xpos = pos.x;
         float zpos = pos.z;
         player.transform.position = new Vector3(xpos, player.transform.position.y, zpos);
-        if (player.transform.position.y < -20)
-            gameOver = true;
-        if (player.transform.position.z > 264)
-        {
-            EnableMovement(false);
-            UIManager.Instance.LvlCompleted();
-        }
 
         foreach (CubeController cube in cubes)                                              //maintaining them as one stack of cubes while moving
         {
