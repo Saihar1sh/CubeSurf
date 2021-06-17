@@ -6,7 +6,7 @@ using TMPro;
 public class UIManager : MonoSingletonGeneric<UIManager>
 {
     [SerializeField]
-    private Button playBtn, retryBtn, exitBtn, exitBtn2;
+    private Button playBtn, retryBtn, exitBtn, exitBtn2, exitBtn3, playAgainBtn;
 
     [SerializeField]
     private Image startImg, retryImg, lvlCompleteImg;
@@ -21,6 +21,8 @@ public class UIManager : MonoSingletonGeneric<UIManager>
         retryBtn.onClick.AddListener(RetryScene);
         exitBtn.onClick.AddListener(ExitGame);
         exitBtn2.onClick.AddListener(ExitGame);
+        exitBtn3.onClick.AddListener(ExitGame);
+        playAgainBtn.onClick.AddListener(RetryScene);
 
     }
     // Start is called before the first frame update
@@ -60,6 +62,7 @@ public class UIManager : MonoSingletonGeneric<UIManager>
     {
         SceneManager.LoadScene(0);
         RetryImageEnable(false);
+        lvlCompleteImg.gameObject.SetActive(false);
 
     }
     private void ExitGame()

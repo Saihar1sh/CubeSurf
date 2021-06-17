@@ -251,7 +251,7 @@ ScriptsOnlyBuild:
     className: PhysicsRaycaster
   - hash:
       serializedVersion: 2
-      Hash: 2e061aa9d8a70c46551aba13c3b4807c
+      Hash: e30f1fa3c042f52efc953b415e1283c4
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: UIManager
@@ -570,4 +570,4 @@ ScriptsOnlyBuild:
   platform: 13
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
-  playerPath: C:/Projects/CubeSurf/test.apk
+  playerPath: C:/Projects/CubeSurf/CubeSurfClone.apk
